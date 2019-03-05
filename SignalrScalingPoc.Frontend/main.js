@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
         log("Pong received.")
     });
 
+    connection.on('ReceiveMessage', function (message, name) {
+        log(`Message received from ${name}: ${message}`);
+    });
+
     function log(message) {
         const timestamp = new Date().toLocaleTimeString();
         const log = `${timestamp}: ${message}`;
@@ -25,14 +29,16 @@ document.addEventListener('DOMContentLoaded', () => {
             .start()
             .then(() => {
                 log('connected!');
-                document.getElementById('connectbtn').setAttribute('disabled', 'true');
-                document.getElementById('pingbtn').removeAttribute('disabled');
+                document.getElementById('connectbtn').style.display = 'none';
+                document.getElementById('pingbtn').style.display = 'inline';
+                document.getElementById('messagesending').style.display="block";
+                document.getElementById('txt').focus();
             })
             .catch((error) => {
                 log(`error connecting : ${error}`);
             });
     }
-    
+
     function ping() {
         log("Sending Ping...");
 
@@ -43,6 +49,23 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    function sendMessage(evt) {
+        const message = document.getElementById('txt').value;
+
+        connection
+            .invoke("SendMessage", message)
+            .catch(error => {
+                log(`Error sending message: ${error}`);
+            })
+            .finally(() => {
+                document.getElementById('txt').value = "";
+                document.getElementById('txt').focus();
+            });
+
+        evt.preventDefault();
+    }
+
     document.getElementById('connectbtn').onclick = connect;
     document.getElementById('pingbtn').onclick = ping;
+    document.getElementById('sendform').onsubmit = sendMessage;
 });
