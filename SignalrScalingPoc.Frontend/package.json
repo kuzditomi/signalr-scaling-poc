@@ -1,0 +1,16 @@
+{
+  "name": "SignalrScalingPoc.Frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "http-server -p 8090"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aspnet/signalr": "1.1.2",
+    "http-server": "0.11.1"
+  }
+}

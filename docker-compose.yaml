@@ -1,0 +1,8 @@
+version: '2'
+services:
+    web:
+        image: kuzditomi-signalrpoc-hubservice
+        build: ./SignalrScalingPoc.PushService
+        ports: 
+            - "8080:80"
+            
