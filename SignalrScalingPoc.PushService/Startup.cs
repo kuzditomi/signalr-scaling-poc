@@ -30,7 +30,10 @@ namespace SignalrScalingPoc.PushService
                             .AllowCredentials();
                     });
             });
-            services.AddSignalR();
+
+            services
+                .AddSignalR()
+                .AddStackExchangeRedis("http://localhost:6379");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
