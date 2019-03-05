@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Threading.Tasks;
 
 namespace SignalrScalingPoc.PushService
 {
-    public interface IPushClient
+    public class MyHub : Hub
     {
-        void Pong();
-    }
-
-    public class MyHub : Hub<IPushClient>
-    {
-        public void Ping()
+        public async Task Ping()
         {
-            Clients.Caller.Pong();
+            await Clients.Caller.SendAsync("Pong");
         }
     }
 }
