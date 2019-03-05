@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("http://localhost:8080/myHub")
+        .withUrl("http://localhost:9911/myHub")
         .configureLogging(signalR.LogLevel.Information)
         .build();
 

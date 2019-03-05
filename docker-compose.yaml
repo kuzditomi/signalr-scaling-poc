@@ -8,6 +8,14 @@ services:
     web:
         image: kuzditomi-signalrpoc-hubservice
         build: ./SignalrScalingPoc.PushService
-        ports: 
-            - "8080:80"
+        expose: 
+            - "80"
         depends_on: [ redis ]
+    lb:
+        image: 'haproxy'
+        links:
+            - web
+        ports:
+            - "9911:8080"
+        volumes:
+        - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"

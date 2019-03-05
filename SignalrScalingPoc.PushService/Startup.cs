@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
+using System.Net;
 
 namespace SignalrScalingPoc.PushService
 {
@@ -31,9 +33,33 @@ namespace SignalrScalingPoc.PushService
                     });
             });
 
+            var redisAddress = Dns.GetHostAddressesAsync("signalr-scaling-poc_redis_1").Result.FirstOrDefault().ToString();
             services
                 .AddSignalR()
-                .AddStackExchangeRedis("http://localhost:6379");
+                .AddStackExchangeRedis(o =>
+                {
+                    o.ConnectionFactory = async writer =>
+                    {
+                        var config = new ConfigurationOptions
+                        {
+                            AbortOnConnectFail = false
+                        };
+                        config.EndPoints.Add(Dns.GetHostAddressesAsync(redisAddress).Result.FirstOrDefault().ToString(), 0);
+                        config.SetDefaultPorts();
+                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                        connection.ConnectionFailed += (_, e) =>
+                        {
+                            Console.WriteLine("Connection to Redis failed.");
+                        };
+
+                        if (!connection.IsConnected)
+                        {
+                            Console.WriteLine("Did not connect to Redis.");
+                        }
+
+                        return connection;
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
