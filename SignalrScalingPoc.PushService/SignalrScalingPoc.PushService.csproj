@@ -11,9 +11,14 @@
     <PackageReference Include="Microsoft.AspNet.SignalR.SelfHost" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="1.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.4.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SignalrScalingPoc.RabbitConsumer\SignalrScalingPoc.RabbitConsumer.csproj" />
   </ItemGroup>
 
 </Project>

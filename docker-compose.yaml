@@ -1,5 +1,16 @@
 version: '2'
 services:
+    rabbit: 
+        image: rabbitmq:3-management
+        ports:
+            - "15672:15672"
+        expose:
+            - "5672"
+        environment:
+            - RABBITMQ_DEFAULT_USER=rabbitmq
+            - RABBITMQ_DEFAULT_PASS=rabbitmq
+            - RABBITMQ_DEFAULT_VHOST=myvhost
+        restart: always
     redis:
         image: redis
         ports:
@@ -7,10 +18,16 @@ services:
         restart: always
     web:
         image: kuzditomi-signalrpoc-hubservice
-        build: ./SignalrScalingPoc.PushService
+        build:
+            context: ./
+            dockerfile: PushService.Dockerfile
         expose: 
             - "80"
-        depends_on: [ redis ]
+        depends_on: [ redis, rabbit ]
+        environment:
+            - rabbit_user=rabbitmq
+            - rabbit_password=rabbitmq
+            - rabbit_vh=myvhost
     lb:
         image: 'haproxy'
         links:

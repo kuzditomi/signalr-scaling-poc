@@ -5,10 +5,10 @@ EXPOSE 443
 
 FROM microsoft/dotnet:2.2-sdk-stretch AS build
 WORKDIR /src
-COPY [".", "SignalrScalingPoc.PushService/"]
-RUN dotnet restore "SignalrScalingPoc.PushService/SignalrScalingPoc.PushService.csproj"
+COPY [".", "SignalrScalingPoc/"]
+RUN dotnet restore "SignalrScalingPoc/SignalrScalingPoc.sln"
 COPY . .
-WORKDIR "/src/SignalrScalingPoc.PushService"
+WORKDIR "/src/SignalrScalingPoc/SignalrScalingPoc.PushService"
 RUN dotnet build "SignalrScalingPoc.PushService.csproj" -c Release -o /app
 
 FROM build AS publish
