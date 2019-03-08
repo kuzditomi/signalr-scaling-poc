@@ -1,1 +1,2 @@
-# signalr-scaling-poc
+# Signalr scaling poc
+![Architecture](architecture.JPG "Architecture")
