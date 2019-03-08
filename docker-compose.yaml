@@ -28,6 +28,16 @@ services:
             - rabbit_user=rabbitmq
             - rabbit_password=rabbitmq
             - rabbit_vh=myvhost
+    publish:
+        image: kuzditomi-signalrpoc-publishservice
+        build: './SignalrScalingPoc.RabbitPublisher'
+        ports: 
+            - "8081:80"
+        depends_on: [ rabbit ]
+        environment:
+            - rabbit_user=rabbitmq
+            - rabbit_password=rabbitmq
+            - rabbit_vh=myvhost
     lb:
         image: 'haproxy'
         links:
@@ -35,4 +45,4 @@ services:
         ports:
             - "9911:8080"
         volumes:
-        - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+        - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro

@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.28606.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalrScalingPoc.PushService", "SignalrScalingPoc.PushService\SignalrScalingPoc.PushService.csproj", "{699CF82B-FD23-4F98-9313-332A788408E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalrScalingPoc.RabbitConsumer", "SignalrScalingPoc.RabbitConsumer\SignalrScalingPoc.RabbitConsumer.csproj", "{63F88BA0-41FB-4227-ABA4-66A73E97A223}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalrScalingPoc.RabbitConsumer", "SignalrScalingPoc.RabbitConsumer\SignalrScalingPoc.RabbitConsumer.csproj", "{63F88BA0-41FB-4227-ABA4-66A73E97A223}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalrScalingPoc.RabbitPublisher", "SignalrScalingPoc.RabbitPublisher\SignalrScalingPoc.RabbitPublisher.csproj", "{21758398-EB5A-4118-A2A8-9A476FD20897}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{63F88BA0-41FB-4227-ABA4-66A73E97A223}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63F88BA0-41FB-4227-ABA4-66A73E97A223}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63F88BA0-41FB-4227-ABA4-66A73E97A223}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21758398-EB5A-4118-A2A8-9A476FD20897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21758398-EB5A-4118-A2A8-9A476FD20897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21758398-EB5A-4118-A2A8-9A476FD20897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21758398-EB5A-4118-A2A8-9A476FD20897}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
