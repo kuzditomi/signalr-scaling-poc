@@ -11,15 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     connection.on('ReceiveMessage', function (message, name) {
-        log(`Message received from ${name}: ${message}`);
+        log(`Message received from push node:${name}: ${message}`);
     });
 
     function log(message) {
+        const logElement = document.getElementById('log');
         const timestamp = new Date().toLocaleTimeString();
         const log = `${timestamp}: ${message}`;
         logs.push(log);
 
-        document.getElementById('log').innerText = logs.join('\r\n');
+        logElement.innerText = logs.join('\r\n');
+        logElement.scrollTo(0, logElement.scrollHeight);        
     }
 
     function connect() {

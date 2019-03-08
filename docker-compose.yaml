@@ -26,6 +26,11 @@ services:
             - rabbit_user=rabbitmq
             - rabbit_password=rabbitmq
             - rabbit_vh=myvhost
+    frontend:
+        image: kuzditomi-signalrpoc-frontend
+        build: './SignalrScalingPoc.Frontend'
+        ports: 
+            - "8090:80"
     publish:
         image: kuzditomi-signalrpoc-publishservice
         build: './SignalrScalingPoc.RabbitPublisher'

@@ -6,7 +6,7 @@ namespace SignalrScalingPoc.PushService
 {
     public class MyHub : Hub
     {
-        private static string Name = Guid.NewGuid().ToString();
+        public static string Name = Guid.NewGuid().ToString();
         
         public async Task Ping()
         {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -13,6 +14,12 @@ namespace SignalrScalingPoc.PushService
     {
         private IModel channel;
         private IConnection connection;
+        private readonly IHubContext<MyHub> hub;
+
+        public RabbitConsumerService(IHubContext<MyHub> hub)
+        {
+            this.hub = hub;
+        }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -31,7 +38,6 @@ namespace SignalrScalingPoc.PushService
                 factory.AutomaticRecoveryEnabled = true;
 
                 // connection that will recover automatically
-
                 Console.WriteLine($"Connecting to {factory.HostName} / {factory.VirtualHost} with credentials: {factory.UserName}:{factory.Password} ");
 
                 connection = factory.CreateConnection();
@@ -55,13 +61,14 @@ namespace SignalrScalingPoc.PushService
             return Task.CompletedTask;
         }
 
-        private void OnMessageReceived(object ch, BasicDeliverEventArgs eventArgs)
+        private async void OnMessageReceived(object ch, BasicDeliverEventArgs eventArgs)
         {
             var body = eventArgs.Body;
-            // ... process the message
             var message = System.Text.Encoding.UTF8.GetString(body); 
 
             Console.WriteLine($"Message arrived: {message}");
+
+            await this.hub.Clients.All.SendAsync("ReceiveMessage", message, MyHub.Name);
 
             channel.BasicAck(eventArgs.DeliveryTag, false);
         }
