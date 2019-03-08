@@ -66,9 +66,11 @@ namespace SignalrScalingPoc.PushService
             var body = eventArgs.Body;
             var message = System.Text.Encoding.UTF8.GetString(body); 
 
-            Console.WriteLine($"Message arrived: {message}");
+            var text = message.Split(",")[0];
+            var date = message.Split(",")[1];
+            Console.WriteLine($"Message arrived: {message} at {date}");
 
-            await this.hub.Clients.All.SendAsync("ReceiveMessage", message, MyHub.Name);
+            await this.hub.Clients.All.SendAsync("ReceiveMessage", text, date, MyHub.Name);
 
             channel.BasicAck(eventArgs.DeliveryTag, false);
         }

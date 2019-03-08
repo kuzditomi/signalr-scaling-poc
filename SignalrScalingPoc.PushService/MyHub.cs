@@ -7,7 +7,7 @@ namespace SignalrScalingPoc.PushService
     public class MyHub : Hub
     {
         public static string Name = Guid.NewGuid().ToString();
-        
+
         public async Task Ping()
         {
             await Clients.Caller.SendAsync("Pong");
@@ -15,7 +15,8 @@ namespace SignalrScalingPoc.PushService
 
         public async Task SendMessage(string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", message, Name);
+            var time = DateTime.Now.Ticks;
+            await Clients.All.SendAsync("ReceiveMessage", message, time, Name);
         }
     }
 }

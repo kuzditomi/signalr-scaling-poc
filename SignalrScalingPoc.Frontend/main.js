@@ -5,13 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
         .build();
 
     const logs = [];
+    const buffer = [];
+    const processDelayMs = 1000;
 
     connection.on('Pong', function () {
         log("Pong received.")
     });
 
-    connection.on('ReceiveMessage', function (message, name) {
-        log(`Message received from push node:${name}: ${message}`);
+    connection.on('ReceiveMessage', function (message, date, name) {
+        buffer.push({ message, date, name, arrived: new Date() });
+        buffer.sort((a, b) => a.date < b.date ? -1 : 1);
+        
+        setTimeout(() => {
+            const msg = buffer.shift();
+            log(`Message received from push node:${msg.name}: ${msg.message}`);
+        }, processDelayMs);
     });
 
     function log(message) {
@@ -21,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logs.push(log);
 
         logElement.innerText = logs.join('\r\n');
-        logElement.scrollTo(0, logElement.scrollHeight);        
+        logElement.scrollTo(0, logElement.scrollHeight);
     }
 
     function connect() {
@@ -71,15 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function sendRabbitMessages(evt) {
         fetch("http://localhost:8081/api/messages", {
             method: "POST",
-            mode: "cors", 
+            mode: "cors",
             cache: "no-cache",
             headers: {
                 "Content-Type": "application/json",
             },
             referrer: "no-referrer",
-        }).then(()=>{
+        }).then(() => {
             log('Rabbit messages sent.');
-        }).catch((e)=>{
+        }).catch((e) => {
             log(`Error with rabbit message sending: ${e}`)
         });
 

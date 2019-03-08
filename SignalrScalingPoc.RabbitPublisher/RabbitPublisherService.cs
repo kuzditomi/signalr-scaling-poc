@@ -60,7 +60,8 @@ namespace SignalrScalingPoc.RabbitPublisher
 
         private void PublishMessage(string message)
         {
-            var messageBody = System.Text.Encoding.UTF8.GetBytes(message);
+            var body = $"{message},{DateTime.Now.Ticks}";
+            var messageBody = System.Text.Encoding.UTF8.GetBytes(body);
 
             channel.BasicPublish("test.ex", routingKey: "#", body: messageBody);
         }
