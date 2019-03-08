@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
     rabbit: 
         image: rabbitmq:3-management
@@ -10,37 +10,60 @@ services:
             - RABBITMQ_DEFAULT_USER=rabbitmq
             - RABBITMQ_DEFAULT_PASS=rabbitmq
             - RABBITMQ_DEFAULT_VHOST=myvhost
+        healthcheck:
+            timeout: 5s
+            interval: 5s
+            retries: 5
+            test:
+                - "CMD"
+                - "rabbitmqctl"
+                - "status"
         restart: always
     redis:
         image: redis
         ports:
             - "6379:6379"
+        healthcheck:
+            timeout: 5s
+            interval: 5s
+            retries: 5
+            test:
+                - "CMD"
+                - "bash"
+                - "-c"
+                - "exec 3<> /dev/tcp/127.0.0.1/6379 && echo PING >&3 && head -1 <&3 | grep PONG"
         restart: always
     web:
         image: kuzditomi-signalrpoc-hubservice
         build: './SignalrScalingPoc.PushService'
         expose: 
             - "80"
-        depends_on: [ redis, rabbit ]
         environment:
             - rabbit_user=rabbitmq
             - rabbit_password=rabbitmq
             - rabbit_vh=myvhost
-    frontend:
-        image: kuzditomi-signalrpoc-frontend
-        build: './SignalrScalingPoc.Frontend'
-        ports: 
-            - "8090:80"
+        depends_on: 
+            redis:
+                condition: service_healthy
+            rabbit:
+                condition: service_healthy
     publish:
         image: kuzditomi-signalrpoc-publishservice
         build: './SignalrScalingPoc.RabbitPublisher'
         ports: 
             - "8081:80"
-        depends_on: [ rabbit ]
         environment:
             - rabbit_user=rabbitmq
             - rabbit_password=rabbitmq
             - rabbit_vh=myvhost
+        depends_on:
+            rabbit:
+                condition: service_healthy
+    frontend:
+        image: kuzditomi-signalrpoc-frontend
+        build: './SignalrScalingPoc.Frontend'
+        ports: 
+            - "8090:80"
     lb:
         image: 'haproxy'
         links:

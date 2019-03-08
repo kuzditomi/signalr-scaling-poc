@@ -73,13 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
             method: "POST",
             mode: "cors", 
             cache: "no-cache",
-            // credentials: "same-origin", // include, *same-origin, omit
             headers: {
                 "Content-Type": "application/json",
-                // "Content-Type": "application/x-www-form-urlencoded",
             },
-            referrer: "no-referrer", // no-referrer, *client
-            //body: JSON.stringify(data), // body data type must match "Content-Type" header
+            referrer: "no-referrer",
         }).then(()=>{
             log('Rabbit messages sent.');
         }).catch((e)=>{
