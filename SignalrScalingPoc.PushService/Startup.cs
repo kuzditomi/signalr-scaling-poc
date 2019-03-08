@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using SignalrScalingPoc.RabbitConsumer;
 using StackExchange.Redis;
 using System;
 using System.Linq;

@@ -18,9 +18,7 @@ services:
         restart: always
     web:
         image: kuzditomi-signalrpoc-hubservice
-        build:
-            context: ./
-            dockerfile: PushService.Dockerfile
+        build: './SignalrScalingPoc.PushService'
         expose: 
             - "80"
         depends_on: [ redis, rabbit ]
